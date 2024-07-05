@@ -5,6 +5,7 @@ import Hompage from "./comp/Hompage";
 import Cart from "./comp/Cart";
 import Sigin from "./comp/Sigin";
 import SingleProduct from "./comp/SingleProduct";
+import Wishlist from "./comp/Wishlist";
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/homepage"  element={<Hompage productData={product} />} />
           <Route path="/cart" element={<Cart/>}/>
           <Route path="/singleproduct/:id" element={<SingleProduct/>}/>
+          <Route path="/wishlist" element={<Wishlist/>}/>
         </Routes>
       </BrowserRouter>
     </>

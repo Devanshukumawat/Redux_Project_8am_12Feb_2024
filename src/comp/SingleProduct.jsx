@@ -12,11 +12,14 @@ import {
 } from "mdb-react-ui-kit";
 
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import {useDispatch} from "react-redux"
+import {addtoCart} from "../features/cart/cartSlice.js"
 
 function SingleProduct() {
     const productId = useParams()
     const [productData,setProductData] = useState([])
+    const dispatch = useDispatch()
     useEffect(()=>{
         fetch(`https://dummyjson.com/products/${productId.id}`).then((res)=>{
           return res.json()
@@ -29,17 +32,17 @@ function SingleProduct() {
 
     return ( 
         <>
-            <MDBContainer fluid className="my-5">
+            <MDBContainer  className="my-5" >
       <MDBRow className="justify-content-center">
-        <MDBCol md="8" lg="6" xl="4">
-          <MDBCard style={{ borderRadius: "15px" }}>
+        <MDBCol md="6" lg="6" xl="3">
+          <MDBCard style={{ borderRadius: "15px" , backgroundColor:"black" , color:"white" }}>
             <MDBRipple
               rippleColor="light"
               rippleTag="div"
               className="bg-image rounded hover-overlay"
             >
               <MDBCardImage
-                src={productData && productData.images[0]}
+                src={productData.images && productData.images[0]}
                 fluid
                 className="w-100"
                 style={{
@@ -55,11 +58,11 @@ function SingleProduct() {
               <div className="d-flex justify-content-between">
                 <div>
                   <p>
-                    <a href="#!" className="text-dark">
-                      Dell Xtreme 270
+                    <a href="#!" className="text-light">
+                      {productData.title}
                     </a>
                   </p>
-                  <p className="small text-muted">Laptops</p>
+                  <p className="small text-muted text-light">{productData.brand}</p>
                 </div>
                 <div>
                   <div className="d-flex flex-row justify-content-end mt-1 mb-4 text-danger">
@@ -68,7 +71,7 @@ function SingleProduct() {
                     <MDBIcon fas icon="star" />
                     <MDBIcon fas icon="star" />
                   </div>
-                  <p className="small text-muted">Rated 4.0/5</p>
+                  <p className="small text-muted">Rated {productData.rating}/5</p>
                 </div>
               </div>
             </MDBCardBody>
@@ -76,21 +79,24 @@ function SingleProduct() {
             <MDBCardBody className="pb-0">
               <div className="d-flex justify-content-between">
                 <p>
-                  <a href="#!" className="text-dark">
-                    $3,999
+                  <a href="#!" className="text-light">
+                    Price : {productData.price} $
                   </a>
                 </p>
-                <p className="text-dark">#### 8787</p>
+                <p className="text-light">Stock : {productData.availabilityStatus}</p>
               </div>
-              <p className="small text-muted">VISA Platinum</p>
+              <p className="small text-muted">{productData.returnPolicy}</p>
             </MDBCardBody>
             <hr class="my-0" />
             <MDBCardBody className="pb-0">
               <div className="d-flex justify-content-between align-items-center pb-2 mb-4">
-                <a href="#!" className="text-dark fw-bold">
-                  Cancel
-                </a>
-                <MDBBtn color="primary">Buy now</MDBBtn>
+                <Link to={"/homepage"} className="text-dark fw-bold">
+                
+                <MDBBtn color="danger">Cancel</MDBBtn>
+                </Link>
+                <Link to={"/cart"}>
+                <MDBBtn color="success" onClick={()=>{dispatch(addtoCart(productData))}}>Add To Cart</MDBBtn>
+                </Link>
               </div>
             </MDBCardBody>
           </MDBCard>

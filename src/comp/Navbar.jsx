@@ -17,6 +17,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link } from 'react-router-dom';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useSelector } from 'react-redux';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,6 +61,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
+  let cartValue = useSelector((state)=>state.Allcart.cart)
+  let wishlistValue = useSelector((state)=>state.AllWishlist.wishlist)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -121,14 +125,17 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <Link to={'/cart'}>
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
-            <MailIcon />
+            <ShoppingCartIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <p>Add To Cart</p>
       </MenuItem>
+      </Link>
+      <Link to={"/wishlist"}>
       <MenuItem>
         <IconButton
           size="large"
@@ -136,11 +143,12 @@ export default function Navbar() {
           color="inherit"
         >
           <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
+            <FavoriteIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p>Wishlist</p>
       </MenuItem>
+      </Link>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -179,7 +187,9 @@ export default function Navbar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+            <Link to={"/homepage"}>
+              E-Commerce
+            </Link>
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -193,9 +203,9 @@ export default function Navbar() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
+              <Badge badgeContent={cartValue.length===0 ? "0" : cartValue.length} color="error">
               <Link to={"/cart"}>
-              <ShoppingCartIcon/>
+              <ShoppingCartIcon color='primary'/>
               </Link>
                
               </Badge>
@@ -205,8 +215,10 @@ export default function Navbar() {
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
+              <Badge badgeContent={wishlistValue.length===0 ? "0" :wishlistValue.length} color="success">
+              <Link to={"/wishlist"}>
+              <FavoriteIcon color='error'/>
+              </Link>  
               </Badge>
             </IconButton>
             <IconButton

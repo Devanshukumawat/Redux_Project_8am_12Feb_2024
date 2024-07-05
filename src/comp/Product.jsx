@@ -10,12 +10,13 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useDispatch } from 'react-redux';
 import { addtoCart } from '../features/cart/cartSlice';
 import { Link } from 'react-router-dom';
+import { addtoWishlist } from '../features/wishlist/wishSlice';
 
 export default function Product({Allproducts}) {
     const dispatch =  useDispatch()
   return (
     <Card sx={{ maxWidth: 400  , backgroundColor:"black" , color:"white"}}>
-    <FavoriteIcon sx={{float:"right", margin:"10px" , cursor:"pointer" }}/>
+    <Link to={"/wishlist"}><FavoriteIcon sx={{float:"right", margin:"10px" , cursor:"pointer" , "&:hover":{color:"red"} }} onClick={()=>{dispatch(addtoWishlist(Allproducts))}}/></Link>
     <Box sx={{width:"100%",height:"40vh",display:"flex",
             alignItems:"center",
             justifyContent:"center"}} >

@@ -12,11 +12,13 @@ import {
     MDBTypography,
     } from "mdb-react-ui-kit";
     import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { deleteCart, removeAllCart } from "../features/cart/cartSlice";
     
     export default function Cart() {
         let CartData = useSelector((state)=>state.Allcart.cart)
+        const dispatch = useDispatch()
     return (
     <section className="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
       <MDBContainer className="py-5 h-100">
@@ -40,7 +42,7 @@ import { Link } from "react-router-dom";
     
                     
                     {
-                        CartData.map((value,index)=>(
+                       CartData.length === 0 ? "No Data Found..😕" :  CartData.map((value,index)=>(
                             <MDBRow className="mb-4 d-flex justify-content-between align-items-center">
                         <MDBCol md="2" lg="2" xl="2">
                           <MDBCardImage
@@ -60,7 +62,7 @@ import { Link } from "react-router-dom";
                             <MDBIcon fas icon="minus" />
                           </MDBBtn>
     
-                          <MDBInput type="number" min="0" defaultValue={1} size="sm" />
+                          <MDBInput type="number" min="0" defaultValue={value.quantity} size="sm" />
     
                           <MDBBtn color="link" className="px-2">
                             <MDBIcon fas icon="plus" />
@@ -73,7 +75,7 @@ import { Link } from "react-router-dom";
                         </MDBCol>
                         <MDBCol md="1" lg="1" xl="1" className="text-end">
                           <a href="#!" className="text-muted">
-                            <MDBIcon fas icon="times" />
+                            <MDBIcon fas icon="times" onClick={()=>{dispatch(deleteCart(value))}} />
                           </a>
                         </MDBCol>
                       </MDBRow>
@@ -81,7 +83,7 @@ import { Link } from "react-router-dom";
                     }
                       <hr className="my-4" />
     
-                      <div className="pt-5">
+                      <div className="pt-5 d-flex justify-content-between">
                       <Link to={"/homepage"}>
                         <MDBTypography tag="h6" className="mb-0">
                           <MDBCardText tag="a" href="#!" className="text-body">
@@ -90,6 +92,9 @@ import { Link } from "react-router-dom";
                           </MDBCardText>
                         </MDBTypography>
                     </Link>
+                    <MDBBtn color="danger" className="float-end" onClick={()=>{dispatch(removeAllCart())}}>
+                        Remove All Products
+                      </MDBBtn>
                       </div>
                     </div>
                   </MDBCol>
@@ -107,8 +112,8 @@ import { Link } from "react-router-dom";
                         <MDBTypography tag="h5">€ 137.00</MDBTypography>
                       </div>
     
-                      <MDBBtn color="dark" block size="lg">
-                        Register
+                      <MDBBtn color="warning" block size="lg">
+                        Place Order
                       </MDBBtn>
                     </div>
                   </MDBCol>
