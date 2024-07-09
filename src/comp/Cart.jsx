@@ -14,11 +14,15 @@ import {
     import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { deleteCart, removeAllCart } from "../features/cart/cartSlice";
+import { cartTotal, deleteCart, removeAllCart } from "../features/cart/cartSlice";
     
     export default function Cart() {
         let CartData = useSelector((state)=>state.Allcart.cart)
+        let cartPrice = useSelector((state)=>state.Allcart)
         const dispatch = useDispatch()
+
+        dispatch(cartTotal())
+
     return (
     <section className="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
       <MDBContainer className="py-5 h-100">
@@ -70,7 +74,7 @@ import { deleteCart, removeAllCart } from "../features/cart/cartSlice";
                         </MDBCol>
                         <MDBCol md="3" lg="2" xl="2" className="text-end">
                           <MDBTypography tag="h6" className="mb-0">
-                             {value.price}$
+                             {value.price*value.quantity}$
                           </MDBTypography>
                         </MDBCol>
                         <MDBCol md="1" lg="1" xl="1" className="text-end">
@@ -109,7 +113,7 @@ import { deleteCart, removeAllCart } from "../features/cart/cartSlice";
                         <MDBTypography tag="h5" className="text-uppercase">
                           Total price
                         </MDBTypography>
-                        <MDBTypography tag="h5">€ 137.00</MDBTypography>
+                        <MDBTypography tag="h5">€ {cartPrice.totalPrice}</MDBTypography>
                       </div>
     
                       <MDBBtn color="warning" block size="lg">
